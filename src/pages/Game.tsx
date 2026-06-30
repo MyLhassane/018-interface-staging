@@ -48,7 +48,8 @@ function GamePlay({ challenge }: { challenge: Challenge }) {
     return `/categories/${item.name.toLowerCase().replace(/\s+/g, '_')}.png`;
   };
 
-  // Get player image
+  // Get player image (FAMILYNAME-GIVENNAME.png)
+  // f = first/given name, g = family/last name
   const getPlayerImage = (f: string, g: string) => {
     return `/players/${g.toUpperCase()}-${f.toUpperCase()}.png`;
   };
@@ -231,13 +232,13 @@ function GamePlay({ challenge }: { challenge: Challenge }) {
                         alt={cell.item.displayName}
                         className="w-full h-full object-cover"
                         onError={(e) => {
-                          (e.target as HTMLImageElement).src = `/categories/default.png`;
+                          (e.target as HTMLImageElement).style.display = 'none';
                         }}
                       />
-                      <div className="absolute bottom-0 left-0 right-0 bg-black/70 p-1">
-                        <div className="text-[8px] text-white text-center leading-tight truncate">
+                      <div className="absolute inset-0 bg-gold/20 flex items-center justify-center">
+                        <span className="text-lg font-bold text-gold text-center px-1 leading-tight">
                           {cell.item.displayName}
-                        </div>
+                        </span>
                       </div>
                       {isCorrectAssigned && (
                         <div className="absolute inset-0 flex items-center justify-center bg-green/30">
@@ -269,9 +270,14 @@ function GamePlay({ challenge }: { challenge: Challenge }) {
                 alt={currentPlayerName}
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = `/players/default.png`;
+                  (e.target as HTMLImageElement).style.display = 'none';
                 }}
               />
+              <div className="w-full h-full bg-gold/20 flex items-center justify-center">
+                <span className="text-3xl font-bold text-gold">
+                  {currentPlayerName.charAt(0)}
+                </span>
+              </div>
             </div>
 
             {/* Player Name */}
@@ -320,7 +326,11 @@ function GamePlay({ challenge }: { challenge: Challenge }) {
   );
 }
 
-export default function Game() {
+interface GameProps {
+  gameType: 'connections' | 'factor' | 'decode' | 'impostor' | 'grid';
+}
+
+export default function Game({ gameType }: GameProps) {
   const navigate = useNavigate();
   const [challenge, setChallenge] = useState<Challenge | null>(null);
   const [loading, setLoading] = useState(true);
@@ -331,7 +341,7 @@ export default function Game() {
       try {
         setLoading(true);
         setError(null);
-        const data = await fetchLatestChallenge();
+        const data = await fetchLatestChallenge(gameType);
         setChallenge(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load challenge');
@@ -341,7 +351,7 @@ export default function Game() {
     };
 
     loadChallenge();
-  }, []);
+  }, [gameType]);
 
   const handleGoHome = () => navigate('/');
 

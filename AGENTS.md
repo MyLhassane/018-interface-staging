@@ -6,6 +6,7 @@
 - **NEVER push to GitHub without explicit user request**
 - **NEVER deploy to Vercel without explicit user request**
 - **The user is the final decision maker - always wait for approval**
+- **We are in development mode - do NOT deploy unless told explicitly**
 
 ## Project Structure
 
@@ -46,13 +47,16 @@
 - ✅ GitHub API integration for challenges (`src/api/challenges.ts`)
 - ✅ Deployed to Vercel
 
-### In Progress
-- 🔄 Testing Phenomenon Connections with real data
-- 🔄 Verifying game data from challenges-staging repo
+### In Progress - Bug Fixes
+- 🐛 **Same game in all 5 cards** - All cards link to same game
+- 🐛 **Images don't show** - Player/category images not loading
+- 🐛 **Image alt flickers** - Alt text appears/disappears quickly
+- 🐛 **Design mismatch** - Blue gradient doesn't match original gold/dark theme
 
 ### Pending
+- ⏳ Fix Home page colors to match original design (gold/dark)
+- ⏳ Fix Game page to preserve original design
 - ⏳ Implement remaining 4 games (Factor, Decode R9, Impostor, Grid)
-- ⏳ Home page styling
 - ⏳ Streak tracking
 - ⏳ Share functionality
 
@@ -97,6 +101,11 @@
 - **Task:** Assign each player to one of the 9 categories
 - **Win:** Complete all assignments correctly
 - **Shareable:** Emoji grid shows progress without spoilers
+
+## Fixes Applied (2026-06-30)
+- ✅ `types/index.ts`: Added `GameType`, `DecodeClue`, `ImpostorConfig`, `GridConfig`; extended `Challenge` with `gameType` and optional configs
+- ✅ `api/challenges.ts`: `fetchLatestChallenge()` now fetches from new path `elphenomeno/challenges/{gameType}/` — iterates game-specific index, returns latest match. Legacy `challenges/` path still supported for `fetchLatestLegacyChallenge()`.
+- ✅ `pages/Game.tsx`: Uses `gameType` prop (no longer `_gameType`) when calling `fetchLatestChallenge(gameType)`
 
 ## Deployment
 ```bash

@@ -60,12 +60,36 @@ export interface TimerState {
   timePerGuess: number;
 }
 
+export type GameType = "connections" | "factor" | "decode" | "impostor" | "grid";
+
+export interface DecodeClue {
+  order: number;
+  category: string;
+  text: string;
+  answer: string;
+}
+
+export interface ImpostorConfig {
+  categoryId: number;
+  impostorPlayerId: number;
+}
+
+export interface GridConfig {
+  rowCategories: number[][];
+  columnCategories: number[][];
+  cells: number[][];
+}
+
 // Challenge Types
 export interface Challenge {
   gameNumber: number;
+  gameType: GameType;
   remit: RemitItem[][];
   players: ChallengePlayer[];
   publishedAt: string | null;
+  decodeConfig?: DecodeClue[];
+  impostorConfig?: ImpostorConfig;
+  gridConfig?: GridConfig;
 }
 
 export interface RemitItem {

@@ -2,6 +2,10 @@ import { createBrowserRouter } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
 import Game from './pages/Game';
+import Factor from './pages/Factor';
+import Decode from './pages/Decode';
+import Impostor from './pages/Impostor';
+import Grid from './pages/Grid';
 import Profile from './pages/Profile';
 import Leaderboard from './pages/Leaderboard';
 import Rooms from './pages/Rooms';
@@ -21,26 +25,26 @@ export const router = createBrowserRouter([
   },
   {
     path: '/game',
-    element: <Game />,
+    element: <Game gameType="connections" />,
   },
   {
     path: '/game/connections',
-    element: <Game />,
+    element: <Game gameType="connections" />,
   },
   {
     path: '/game/factor',
-    element: <Game />,
+    element: <Factor />,
   },
   {
     path: '/game/decode',
-    element: <Game />,
+    element: <Decode />,
   },
   {
     path: '/game/impostor',
-    element: <Game />,
+    element: <Impostor />,
   },
   {
     path: '/game/grid',
-    element: <Game />,
+    element: <Grid />,
   },
 ]);

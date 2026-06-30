@@ -1,0 +1,220 @@
+import { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useFactor } from '@/hooks/useFactor';
+import type { GameResult } from '@/hooks/useGame';
+import { fetchLatestChallenge } from '@/api/challenges';
+import type { Challenge } from '@/types';
+
+const menuItems = [
+  { path: '/', label: 'Home', labelAr: 'الرئيسية' },
+  { path: '/game/factor', label: 'Factor', labelAr: 'عامل الفينومينو' },
+  { path: '/rooms', label: 'Rooms', labelAr: 'الغرف' },
+  { path: '/leaderboard', label: 'Leaderboard', labelAr: 'المتصدرين' },
+  { path: '/profile', label: 'Profile', labelAr: 'الملف الشخصي' },
+  { path: '/settings', label: 'Settings', labelAr: 'الإعدادات' },
+];
+
+function FactorPlay({ challenge }: { challenge: Challenge }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [result, setResult] = useState<GameResult | null>(null);
+
+  const {
+    currentPlayer, currentPlayerName, score, timeLeft, gameStatus,
+    selectedTraitId, showFeedback, progress, traits,
+    selectTrait, confirmSelection, skip, timePerRound,
+  } = useFactor({ challenge, timePerRound: 30, onGameComplete: (r) => setResult(r) });
+
+  const handlePlayAgain = () => navigate(0);
+  const handleGoHome = () => navigate('/');
+
+  const getPlayerImage = (f: string, g: string) => {
+    return `/players/${g.toUpperCase()}-${f.toUpperCase()}.png`;
+  };
+
+  const getCategoryImage = (item: { id: number; name: string; displayName: string }) => {
+    return `/categories/${item.name.toLowerCase().replace(/\s+/g, '_')}.png`;
+  };
+
+  if (gameStatus === 'completed' && result) {
+    return (
+      <div className="relative w-full max-w-[480px] h-[100dvh] mx-auto overflow-hidden bg-[url('/bg.png')] bg-cover bg-center flex flex-col items-center justify-center px-6">
+        <div className="bg-black/60 rounded-2xl p-8 w-full max-w-sm text-center space-y-6">
+          <div className="text-4xl">🏆</div>
+          <h2 className="text-2xl font-bold text-gold">انتهت اللعبة!</h2>
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div><div className="text-2xl font-bold text-green">{result.correct}</div><div className="text-xs text-gray-400">صحيح</div></div>
+            <div><div className="text-2xl font-bold text-red">{result.wrong}</div><div className="text-xs text-gray-400">خطأ</div></div>
+            <div><div className="text-2xl font-bold text-gray-400">{result.skipped}</div><div className="text-xs text-gray-400">متخطى</div></div>
+          </div>
+          <div className="border-t border-gray-700 pt-4">
+            <div className="text-3xl font-bold text-gold">{result.score}</div>
+            <div className="text-sm text-gray-400">نقطة</div>
+          </div>
+          <div className="flex gap-3">
+            <button onClick={handlePlayAgain} className="flex-1 py-3 bg-gold text-black font-bold rounded-lg hover:bg-gold/90 transition-colors">العب مرة أخرى</button>
+            <button onClick={handleGoHome} className="flex-1 py-3 border border-gold text-gold font-bold rounded-lg hover:bg-gold/10 transition-colors">الرئيسية</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative w-full max-w-[480px] h-[100dvh] mx-auto overflow-hidden bg-[url('/bg.png')] bg-cover bg-center flex flex-col">
+      <header className="relative w-full flex justify-center items-center gap-0.5 flex-shrink-0 bg-[url('/header/header-bg.png')] bg-cover bg-center">
+        <div className="relative h-[min(34vw,150px)] flex-1">
+          <img src="/header/header-left.png" alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            <div className="relative">
+              <svg className="w-16 h-16" viewBox="0 0 64 64">
+                <circle cx="32" cy="32" r="28" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="4" />
+                <circle cx="32" cy="32" r="28" fill="none" stroke={timeLeft > 10 ? '#c9a84c' : '#e74c3c'} strokeWidth="4"
+                  strokeDasharray={`${(timeLeft / timePerRound) * 176} 176`} strokeLinecap="round" transform="rotate(-90 32 32)"
+                  className="transition-all duration-1000" />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className={`text-xl font-bold ${timeLeft > 10 ? 'text-gold' : 'text-red'}`}>{timeLeft}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <img src="/header/header-center.png" alt="FIFA World Cup 2026" className="h-[min(18vw,80px)] flex-[1.2] object-contain" />
+        <div className="relative h-[min(34vw,150px)] flex-1">
+          <img src="/header/header-right.png" alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 text-white hover:bg-white/20 rounded-lg transition-colors" style={{ backgroundColor: 'rgb(92 85 56 / 80%)', borderRadius: '3.40282e38px' }}>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {isMenuOpen ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /> : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />}
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {isMenuOpen && (
+        <>
+          <div className="fixed inset-0 bg-black/50 z-40" onClick={() => setIsMenuOpen(false)} />
+          <nav className="absolute right-2 top-[min(34vw,150px)] mt-1 w-56 bg-bg-dark border border-gold/30 rounded-lg shadow-xl z-50 overflow-hidden">
+            {menuItems.map((item) => (
+              <Link key={item.path} to={item.path} onClick={() => setIsMenuOpen(false)}
+                className={`block px-4 py-3 text-right transition-colors ${location.pathname === item.path ? 'bg-gold/20 text-gold' : 'text-gray-300 hover:bg-gold/10 hover:text-gold'}`}>
+                <span className="block text-sm">{item.labelAr}</span>
+                <span className="block text-xs text-gray-500">{item.label}</span>
+              </Link>
+            ))}
+          </nav>
+        </>
+      )}
+
+      <div className="px-4 py-2 bg-black/30">
+        <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
+          <span>{progress.current} / {progress.total}</span>
+          <span className="text-gold font-bold">{score} نقطة</span>
+        </div>
+        <div className="w-full bg-gray-700 rounded-full h-1.5">
+          <div className="bg-gold h-1.5 rounded-full transition-all duration-300" style={{ width: `${progress.percentage}%` }} />
+        </div>
+      </div>
+
+      {currentPlayer && (
+        <>
+          <div className="flex-1 flex flex-col items-center justify-center px-4">
+            <div className={`w-32 h-32 mx-auto rounded-full overflow-hidden border-4 mb-3 transition-all ${showFeedback === 'correct' ? 'border-green shadow-lg shadow-green/30' : ''} ${showFeedback === 'wrong' ? 'border-red shadow-lg shadow-red/30' : ''} ${!showFeedback ? 'border-gold/50' : ''}`}>
+              <img src={getPlayerImage(currentPlayer.f, currentPlayer.g)} alt={currentPlayerName} className="w-full h-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+              <div className="w-full h-full bg-gold/20 flex items-center justify-center">
+                <span className="text-3xl font-bold text-gold">{currentPlayerName.charAt(0)}</span>
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-white mb-1">{currentPlayerName}</h3>
+            <p className="text-sm text-gray-400 mb-4">{currentPlayer.p}</p>
+
+            <div className="text-center text-sm text-gray-400 mb-3">اختر الصفة المناسبة لهذا اللاعب:</div>
+
+            <div className="flex flex-wrap gap-3 justify-center px-4">
+              {traits.map((trait) => {
+                const isSelected = selectedTraitId === trait.id;
+                return (
+                  <button key={trait.id} onClick={() => selectTrait(trait.id)}
+                    disabled={!!showFeedback}
+                    className={`px-5 py-3 rounded-xl font-bold text-sm border-2 transition-all ${
+                      isSelected ? 'border-gold bg-gold/20 text-gold scale-105 shadow-lg shadow-gold/30' : 'border-gray-600 bg-black/30 text-gray-300 hover:border-gold/50'
+                    } ${showFeedback ? 'opacity-50' : ''}`}>
+                    <div className="flex flex-col items-center gap-1">
+                      <img src={getCategoryImage(trait)} alt={trait.displayName} className="w-10 h-10 rounded-full object-cover"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                      <span>{trait.displayName}</span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {showFeedback && (
+              <div className={`mt-4 text-lg font-bold ${showFeedback === 'correct' ? 'text-green' : 'text-red'}`}>
+                {showFeedback === 'correct' ? '✓ صحيح!' : '✗ خطأ!'}
+              </div>
+            )}
+          </div>
+
+          <div className="px-4 pb-6">
+            {showFeedback ? (
+              <div className="text-center text-gray-400 text-sm">جاري التحميل...</div>
+            ) : (
+              <div className="flex gap-3">
+                <button onClick={skip} className="flex-1 py-3 border border-gray-600 text-gray-400 font-bold rounded-lg hover:bg-gray-800 transition-colors">تخطي</button>
+                <button onClick={confirmSelection} disabled={selectedTraitId === null}
+                  className={`flex-1 py-3 font-bold rounded-lg transition-colors ${selectedTraitId !== null ? 'bg-gold text-black hover:bg-gold/90' : 'bg-gray-700 text-gray-500 cursor-not-allowed'}`}>تأكيد</button>
+              </div>
+            )}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+export default function Factor() {
+  const navigate = useNavigate();
+  const [challenge, setChallenge] = useState<Challenge | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await fetchLatestChallenge('factor');
+        setChallenge(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load challenge');
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="relative w-full max-w-[480px] h-[100dvh] mx-auto overflow-hidden bg-[url('/bg.png')] bg-cover bg-center flex flex-col items-center justify-center">
+        <div className="text-white text-lg mb-4">جاري تحميل التحدي...</div>
+        <div className="w-12 h-12 border-4 border-gold border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (error || !challenge) {
+    return (
+      <div className="relative w-full max-w-[480px] h-[100dvh] mx-auto overflow-hidden bg-[url('/bg.png')] bg-cover bg-center flex flex-col items-center justify-center px-8">
+        <div className="text-red text-lg mb-4 text-center">{error || 'لا يوجد تحدي متاح'}</div>
+        <button onClick={() => navigate('/')} className="px-6 py-3 bg-gold text-bg-dark font-bold rounded-lg hover:bg-gold/90 transition-colors">العودة للرئيسية</button>
+      </div>
+    );
+  }
+
+  return <FactorPlay challenge={challenge} />;
+}

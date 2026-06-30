@@ -9,7 +9,6 @@ const games = [
     descriptionAr: 'اربط اللاعبين بالفئات الصحيحة',
     path: '/game/connections',
     icon: '🔗',
-    color: 'from-blue-500 to-purple-600',
   },
   {
     id: 'factor',
@@ -19,7 +18,6 @@ const games = [
     descriptionAr: 'اكتشف ما يجعل كل لاعب مميزاً',
     path: '/game/factor',
     icon: '⭐',
-    color: 'from-yellow-500 to-orange-600',
   },
   {
     id: 'decode',
@@ -29,7 +27,6 @@ const games = [
     descriptionAr: 'فك التلميحيات لتحديد اللاعب الغامض',
     path: '/game/decode',
     icon: '🔐',
-    color: 'from-green-500 to-emerald-600',
   },
   {
     id: 'impostor',
@@ -39,7 +36,6 @@ const games = [
     descriptionAr: 'اعثر على اللاعب المزيف في كل فئة',
     path: '/game/impostor',
     icon: '🎭',
-    color: 'from-red-500 to-pink-600',
   },
   {
     id: 'grid',
@@ -49,36 +45,44 @@ const games = [
     descriptionAr: 'أكمل اللغز الشبكي لكرة القدم',
     path: '/game/grid',
     icon: '📊',
-    color: 'from-cyan-500 to-blue-600',
   },
 ];
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black">
+    <div className="relative w-full max-w-[480px] h-[100dvh] mx-auto overflow-hidden bg-[url('/bg.png')] bg-cover bg-center flex flex-col">
       {/* Header */}
-      <div className="text-center pt-12 pb-8 px-4">
-        <h1 className="text-4xl font-bold text-gold mb-2">El Phenomeno</h1>
-        <p className="text-xl text-gray-400">FIFA World Cup 2026</p>
-      </div>
+      <header className="relative w-full flex justify-center items-center gap-0.5 flex-shrink-0 bg-[url('/header/header-bg.png')] bg-cover bg-center">
+        <div className="relative h-[min(34vw,150px)] flex-1">
+          <img src="/header/header-left.png" alt="" className="w-full h-full object-cover" />
+        </div>
+        <img
+          src="/header/header-center.png"
+          alt="FIFA World Cup 2026"
+          className="h-[min(18vw,80px)] flex-[1.2] object-contain"
+        />
+        <div className="relative h-[min(34vw,150px)] flex-1">
+          <img src="/header/header-right.png" alt="" className="w-full h-full object-cover" />
+        </div>
+      </header>
 
       {/* Game Cards */}
-      <div className="px-4 pb-8">
-        <h2 className="text-lg font-bold text-white mb-4 text-center">اختر لعبتك</h2>
-        <div className="grid gap-4 max-w-md mx-auto">
+      <div className="flex-1 overflow-y-auto px-4 py-6">
+        <h2 className="text-lg font-bold text-gold mb-4 text-center">اختر لعبتك</h2>
+        <div className="grid gap-3 max-w-md mx-auto">
           {games.map((game) => (
             <Link
               key={game.id}
               to={game.path}
-              className={`block bg-gradient-to-r ${game.color} rounded-xl p-4 hover:scale-105 transition-transform`}
+              className="block bg-black/60 border border-gold/30 rounded-xl p-4 hover:bg-gold/10 hover:border-gold/50 transition-all"
             >
               <div className="flex items-center gap-4">
-                <div className="text-4xl">{game.icon}</div>
+                <div className="text-3xl">{game.icon}</div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-bold text-white">{game.titleAr}</h3>
-                  <p className="text-sm text-white/80">{game.descriptionAr}</p>
+                  <h3 className="text-lg font-bold text-gold">{game.titleAr}</h3>
+                  <p className="text-sm text-gray-400">{game.descriptionAr}</p>
                 </div>
-                <div className="text-white/60">←</div>
+                <div className="text-gold/60">←</div>
               </div>
             </Link>
           ))}
