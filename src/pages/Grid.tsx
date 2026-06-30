@@ -120,7 +120,7 @@ function GridPlay({ challenge }: { challenge: Challenge }) {
             {/* Current Player */}
             <div className="text-center mb-3">
               <div className={`w-20 h-20 mx-auto rounded-full overflow-hidden border-3 mb-2 transition-all ${showFeedback === 'correct' ? 'border-green shadow-lg shadow-green/30' : ''} ${showFeedback === 'wrong' ? 'border-red shadow-lg shadow-red/30' : ''} ${!showFeedback ? 'border-gold/50' : ''}`}>
-                <img src={getPlayerImage(currentPlayer.f, currentPlayer.g)} alt={currentPlayerName}
+                <img src={currentPlayer.image || getPlayerImage(currentPlayer.f, currentPlayer.g)} alt={currentPlayerName}
                   className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
               </div>
               <h3 className="text-base font-bold text-white">{currentPlayerName}</h3>
@@ -157,7 +157,7 @@ function GridPlay({ challenge }: { challenge: Challenge }) {
                         {cellPlayer && assigned && (
                           <div className="flex flex-col items-center">
                             <div className="w-8 h-8 rounded-full overflow-hidden border border-gold/30">
-                              <img src={getPlayerImage(cellPlayer.f, cellPlayer.g)} alt=""
+                              <img src={cellPlayer.image || getPlayerImage(cellPlayer.f, cellPlayer.g)} alt=""
                                 className="w-full h-full object-cover"
                                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                             </div>

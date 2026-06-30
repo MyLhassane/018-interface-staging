@@ -122,7 +122,7 @@ function FactorPlay({ challenge }: { challenge: Challenge }) {
         <>
           <div className="flex-1 flex flex-col items-center justify-center px-4">
             <div className={`w-32 h-32 mx-auto rounded-full overflow-hidden border-4 mb-3 transition-all ${showFeedback === 'correct' ? 'border-green shadow-lg shadow-green/30' : ''} ${showFeedback === 'wrong' ? 'border-red shadow-lg shadow-red/30' : ''} ${!showFeedback ? 'border-gold/50' : ''}`}>
-              <img src={getPlayerImage(currentPlayer.f, currentPlayer.g)} alt={currentPlayerName} className="w-full h-full object-cover"
+              <img src={currentPlayer.image || getPlayerImage(currentPlayer.f, currentPlayer.g)} alt={currentPlayerName} className="w-full h-full object-cover"
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
               <div className="w-full h-full bg-gold/20 flex items-center justify-center">
                 <span className="text-3xl font-bold text-gold">{currentPlayerName.charAt(0)}</span>

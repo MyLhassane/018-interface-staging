@@ -37,7 +37,7 @@ function ImpostorPlay({ challenge }: { challenge: Challenge }) {
           {impostorPlayer && (
             <div className="flex flex-col items-center gap-2">
               <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-red">
-                <img src={getPlayerImage(impostorPlayer.f, impostorPlayer.g)} alt={`${impostorPlayer.g} ${impostorPlayer.f}`}
+                <img src={impostorPlayer?.image || getPlayerImage(impostorPlayer.f, impostorPlayer.g)} alt={`${impostorPlayer.g} ${impostorPlayer.f}`}
                   className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
               </div>
               <div className="text-lg font-bold text-red">{impostorPlayer.g} {impostorPlayer.f}</div>
@@ -122,7 +122,7 @@ function ImpostorPlay({ challenge }: { challenge: Challenge }) {
                   isSelected ? 'border-red bg-red/10 scale-[1.02]' : 'border-gray-700 hover:border-gold/50'
                 }`}>
                 <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-gold/30 flex-shrink-0">
-                  <img src={getPlayerImage(player.f, player.g)} alt={`${player.g} ${player.f}`}
+                  <img src={player.image || getPlayerImage(player.f, player.g)} alt={`${player.g} ${player.f}`}
                     className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                 </div>
                 <div className="flex-1 text-right">

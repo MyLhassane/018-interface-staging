@@ -44,7 +44,7 @@ function DecodePlay({ challenge }: { challenge: Challenge }) {
           {mysteryPlayer && (
             <div className="flex flex-col items-center gap-2">
               <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-gold">
-                <img src={getPlayerImage(mysteryPlayer.f, mysteryPlayer.g)} alt={mysteryPlayerName}
+                <img src={mysteryPlayer.image || getPlayerImage(mysteryPlayer.f, mysteryPlayer.g)} alt={mysteryPlayerName}
                   className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
               </div>
               <div className="text-xl font-bold text-white">{mysteryPlayerName}</div>
@@ -182,7 +182,7 @@ function DecodePlay({ challenge }: { challenge: Challenge }) {
           <div className="bg-black/50 border border-gold/30 rounded-xl p-5 text-center">
             <div className="text-lg font-bold text-gold mb-3">اللاعب الغامض</div>
             <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-2 border-gold mb-3">
-              <img src={getPlayerImage(mysteryPlayer.f, mysteryPlayer.g)} alt={mysteryPlayerName}
+              <img src={mysteryPlayer.image || getPlayerImage(mysteryPlayer.f, mysteryPlayer.g)} alt={mysteryPlayerName}
                 className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
             </div>
             <div className="text-xl font-bold text-white">{mysteryPlayerName}</div>
