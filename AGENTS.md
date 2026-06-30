@@ -63,12 +63,40 @@
 - Partners do NOT see this
 - Safe to experiment and break things
 
-### Game Logic (Phenomenon Connections)
-- Players are presented with a 3x3 grid of categories
-- Must identify which player connects to which category
-- Uses `v: number[]` from player data as answer key
-- Timer: 30 seconds per player
-- Scoring: +100 correct, +10/sec speed bonus, +50 streak, -25 wrong
+## 5-Game Experiment Plan
+
+### Game 1: Phenomenon Connections (Implemented ✅)
+- **Mechanic:** 3x3 grid of categories, assign each player to correct category
+- **Data:** Uses `v: number[]` from player data as answer key
+- **Timer:** 30 seconds per player
+- **Scoring:** +100 correct, +10/sec speed bonus, +50 streak, -25 wrong
+- **Files:** `src/hooks/useGame.ts`, `src/pages/Game.tsx`, `src/pages/Home.tsx`
+
+### Game 2: The Phenomenon Factor
+- **Mechanic:** Discover hidden traits that make each player special
+- **Traits:** Speed, Skill, Power, Vision, Clutch, Longevity, Trophy, Goal, Defender
+- **Status:** ⏳ Pending
+
+### Game 3: Decode the R9
+- **Mechanic:** 9 progressive clues (hard→easy) to identify mystery player
+- **Clues:** Position → Nationality → League → Era → Club tier → Club → Achievement → Nickname → Full reveal
+- **Status:** ⏳ Pending
+
+### Game 4: Impostor: World Cup Edition
+- **Mechanic:** 6 players claim a category, 5 are real, 1 is impostor
+- **Scoring:** Fewer taps = more points
+- **Status:** ⏳ Pending
+
+### Game 5: Grid Challenge
+- **Mechanic:** Complete the football grid puzzle
+- **Status:** ⏳ Pending
+
+## Game Logic (Phenomenon Connections) - Details
+- **Board:** 3x3 grid of category icons (remit items)
+- **Player:** One player appears at a time with image and name
+- **Task:** Assign each player to one of the 9 categories
+- **Win:** Complete all assignments correctly
+- **Shareable:** Emoji grid shows progress without spoilers
 
 ## Deployment
 ```bash
