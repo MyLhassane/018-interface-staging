@@ -20,8 +20,8 @@
 | Location | Path |
 |----------|------|
 | Local | `/Users/hassan/01_Workspaces/dev/active/018-elphenomeno/elphenomeno-interface-staging` |
-| GitHub | `018-interface-staging` |
-| Vercel | `elphenomeno-staging.vercel.app` |
+| GitHub | `MyLhassane/018-interface-staging` |
+| Vercel | `elphenomeno-interface-staging.vercel.app` |
 
 ### Challenges Repos
 | Environment | GitHub |
@@ -36,19 +36,22 @@
 
 ## Current State (2026-06-30)
 
-### Completed (Staging Experiments)
-- ✅ 5 Game Cards on Home page
-- ✅ Game routing for 5 modes
-- ✅ Phenomenon Connections game logic
-- ✅ Category grid selection UI
-- ✅ Timer and scoring system
+### Completed
+- ✅ Fulfilled from production (game components, layout, routing)
+- ✅ 5 Game Cards on Home page (Phenomenon Connections, Factor, Decode R9, Impostor, Grid)
+- ✅ Game routing for 5 modes (`/game/connections`, `/game/factor`, etc.)
+- ✅ Phenomenon Connections game logic (useGame hook rewritten)
+- ✅ Category grid selection UI (3x3 grid)
+- ✅ Timer and scoring system (100pts + speed bonus + streak)
+- ✅ GitHub API integration for challenges (`src/api/challenges.ts`)
+- ✅ Deployed to Vercel
 
 ### In Progress
-- 🔄 Testing Phenomenon Connections
-- 🔄 Verifying game data from GitHub
+- 🔄 Testing Phenomenon Connections with real data
+- 🔄 Verifying game data from challenges-staging repo
 
 ### Pending
-- ⏳ Implement remaining 4 games
+- ⏳ Implement remaining 4 games (Factor, Decode R9, Impostor, Grid)
 - ⏳ Home page styling
 - ⏳ Streak tracking
 - ⏳ Share functionality
@@ -71,10 +74,10 @@
 ```bash
 git push origin main
 vercel --prod --yes
-# Live at: https://elphenomeno-staging.vercel.app
+# Live at: https://elphenomeno-interface-staging.vercel.app
 ```
 
 ## Resources
-- **GitHub:** `018-interface-staging`
-- **Vercel:** `elphenomeno-staging.vercel.app`
+- **GitHub:** https://github.com/MyLhassane/018-interface-staging
+- **Vercel:** https://elphenomeno-interface-staging.vercel.app
 - **Firebase:** https://console.firebase.google.com/project/fifa-world-cup-2026-7d608
